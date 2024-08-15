@@ -25,14 +25,17 @@ class CollectCoinThread(threading.Thread):
                                num_genes=2,
                                init_range_low=0.0,
                                init_range_high=1.0,
+                               crossover_type="single_point",
+                               crossover_probability=.3,
                                random_mutation_min_val=0.0,
                                random_mutation_max_val=1.0,
                                mutation_by_replacement=True,
-                               callback_generation=callback_generation,
+                               mutation_probability=.4,
+                               on_generation=callback_generation,
                                delay_after_gen=self.screen.char_anim_duration)
         ga_instance.run()
 
-def fitness_func(solution, solution_idx):
+def fitness_func(ga, solution, solution_idx):
     curr_screen = app.root.screens[lvl_num]
 
     coins = curr_screen.coins_ids
@@ -94,9 +97,10 @@ def callback_generation(ga_instance):
         best_sol = ga_instance.best_solution()[0]
         app.start_char_animation(lvl_num, [float(best_sol[0]),  float(best_sol[1])])
 
-#    print("Generation  = {generation}".format(generation=ga_instance.generations_completed))
-#    print("Fitness     = {fitness}".format(fitness=ga_instance.best_solution()[1]))
-#    print("Change     = {change}".format(change=fitness_change))
+    print("Generation  = {generation}".format(generation=ga_instance.generations_completed))
+    print("Fitness     = {fitness}".format(fitness=ga_instance.best_solution()[1]))
+    print("Change     = {change}".format(change=fitness_change))
+    print("Solution     = {solution}".format(solution=ga_instance.best_solution()))
 
 class CointexApp(kivy.app.App):
 
